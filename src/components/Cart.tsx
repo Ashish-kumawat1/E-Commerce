@@ -23,9 +23,10 @@ type Props = {
   onUpdate: (id: string, qty: number) => void
   onBack: () => void
   onClear: () => void
+  onRemove: (id: string) => void
 }
 
-export default function Cart({ items, onUpdate, onBack, onClear }: Props) {
+export default function Cart({ items, onUpdate, onBack, onClear, onRemove }: Props) {
   const [checkoutMsg, setCheckoutMsg] = useState('')
   const total = useMemo(() => items.reduce((s, i) => s + i.price * i.qty, 0), [items])
 
@@ -68,6 +69,9 @@ export default function Cart({ items, onUpdate, onBack, onClear }: Props) {
                     <div className="px-2">{i.qty}</div>
                     <button onClick={() => onUpdate(i.id, i.qty + 1)} className="icon-btn" aria-label="Increase">
                       <Plus size={14} />
+                    </button>
+                    <button onClick={() => onRemove(i.id)} className="icon-btn text-red-600 ml-2" aria-label="Remove item">
+                      <Trash2 size={14} />
                     </button>
                   </div>
                 </div>

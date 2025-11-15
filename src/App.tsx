@@ -85,6 +85,14 @@ export default function App(): JSX.Element {
     setCart({})
   }
 
+  function removeFromCart(id: string) {
+    setCart(prev => {
+      const copy = { ...prev }
+      if (copy[id]) delete copy[id]
+      return copy
+    })
+  }
+
   return (
     <div className="app">
       <Header onSearch={setQuery} onShowCart={() => navigate('/cart')} cartCount={Object.values(cart).reduce((s, i) => s + i.qty, 0)} />
@@ -94,7 +102,7 @@ export default function App(): JSX.Element {
           <Route path="/" element={<ProductList products={filtered} onAdd={addToCart} sort={sort} setSort={setSort} />} />
           <Route path="/products" element={<ProductList products={filtered} onAdd={addToCart} sort={sort} setSort={setSort} />} />
           <Route path="/product/:id" element={<ProductDetail onAdd={addToCart} />} />
-          <Route path="/cart" element={<Cart items={Object.values(cart)} onUpdate={updateQty} onBack={() => navigate('/')} onClear={clearCart} />} />
+          <Route path="/cart" element={<Cart items={Object.values(cart)} onUpdate={updateQty} onBack={() => navigate('/')} onClear={clearCart} onRemove={removeFromCart} />} />
           <Route path="/help" element={<Help />} />
         </Routes>
       </main>
